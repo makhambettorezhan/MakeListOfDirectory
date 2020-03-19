@@ -1,0 +1,1 @@
+ContentsWriteFile.java offers opportunity to make a list of all the items in directory and writing it into the file you want.
