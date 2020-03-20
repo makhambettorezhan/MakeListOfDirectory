@@ -32,30 +32,41 @@ public class ContentsWriteFile extends Application {
         gridPane.setVgap(20);
         gridPane.setAlignment(Pos.CENTER);
 
-        //gridPane.setStyle("-fx-border: 1px solid black");
+        Label lblDir = new Label("Specify the DIRECTORY you want the list of:"); 
+        lblDir.setFont(fontLabel);
+        
+        Label lblFile = new Label("Enter the FILE name where you want the list to be placed:"); 
+        lblFile.setFont(fontLabel);
+        
+        Label lblOrder = new Label("Order: (By Name or By Directories)"); 
+        lblOrder.setFont(fontLabel);
 
-        Label lblDir = new Label("Specify the DIRECTORY you want the list of:"); lblDir.setFont(fontLabel);
         TextField tfDir = new TextField();
         tfDir.setPrefWidth(150);
         
-        Label lblFile = new Label("Enter the FILE name where you want the list to be placed:"); lblFile.setFont(fontLabel);
         TextField tfFile = new TextField();
         tfFile.setText("c://Users//Lenovo//Desktop//AllMoviesIHave.txt");
         tfFile.setPrefWidth(150);
 
-        Label lblOrder = new Label("Order: (By Name or By Directories)"); lblOrder.setFont(fontLabel);
         ComboBox<String> cboOrder = new ComboBox<>();
         cboOrder.getItems().addAll("By Name", "By Directory");
-        cboOrder.setStyle("-fx-border: red");
         cboOrder.setValue("By Name");
 
         TextArea ta = new TextArea();
         ta.setPrefColumnCount(50);
         ta.setPrefRowCount(20);
 
-        Button btn = new Button("Show and Print");
-
-        btn.setOnAction(e -> {
+        Button btnShow = new Button("Show and Print");
+        Button btnReset = new Button("Reset");
+        
+        btnReset.setOnAction(e -> {
+            ta.setText("");
+            tfDir.setText("");
+        });
+        
+        btnShow.setOnAction(e -> {
+            ta.setText("");
+            
             fileWalker.walk(tfDir.getText(), cboOrder.getValue().equals("By Name"));
             ArrayList<String> list = fileWalker.getList();
             String moviesString = "";
@@ -68,14 +79,11 @@ public class ContentsWriteFile extends Application {
                     moviesString += movie;
                 }
                 fileWriter.close();
-            } catch(IOException ex) {
-    
-            }
+            } catch(IOException ex) {}
 
             ta.setText(moviesString);
+            list.clear();
         });
-
-
 
         
         gridPane.add(lblDir, 0, 0);
@@ -87,8 +95,8 @@ public class ContentsWriteFile extends Application {
         gridPane.add(lblOrder, 0, 2);
         gridPane.add(cboOrder, 1, 2);
 
-        gridPane.add(btn, 0, 3);
-        //gridPane.add(ta, 0, 4);
+        gridPane.add(btnShow, 0, 3);
+        gridPane.add(btnReset, 1, 3);
 
         pane.setTop(gridPane);
         pane.setCenter(ta);
